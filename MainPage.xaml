@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ElementVisuaElementHotReload"
+             x:Class="ElementVisuaElementHotReload.MainPage">
+
+    <StackLayout>
+        <Label Text="Element parent control"/>
+        <local:MyElementParentControl HeightRequest="50"
+                                      WidthRequest="350">
+            <local:MyNestedElementItem Text="Hi!"/>
+            <local:MyNestedElementItem Text="Element Item 2"/>
+        </local:MyElementParentControl>
+
+        <Label Text="VisualElement parent control"/>
+        <local:MyVisualElementParentControl HeightRequest="50"
+                                            WidthRequest="350">
+            <local:MyNestedVisualElementItem Text="Bye! :("/>
+            <local:MyNestedVisualElementItem Text="VisualElement Item 2"/>
+        </local:MyVisualElementParentControl>
+
+    </StackLayout>
+
+</ContentPage>
