@@ -8,14 +8,14 @@
         <Label Text="Element parent control"/>
         <local:MyElementParentControl HeightRequest="50"
                                       WidthRequest="350">
-            <local:MyNestedElementItem Text="Hi!"/>
+            <local:MyNestedElementItem />
             <local:MyNestedElementItem Text="Element Item 2"/>
         </local:MyElementParentControl>
 
         <Label Text="VisualElement parent control"/>
         <local:MyVisualElementParentControl HeightRequest="50"
                                             WidthRequest="350">
-            <local:MyNestedVisualElementItem Text="Bye! :("/>
+            <local:MyNestedVisualElementItem />
             <local:MyNestedVisualElementItem Text="VisualElement Item 2"/>
         </local:MyVisualElementParentControl>
 

@@ -15,13 +15,14 @@ public partial class MainPage : ContentPage
 public class MyNestedElementItem : Element
 {
     public static readonly BindableProperty TextProperty =
-        BindableProperty.Create(nameof(Text), typeof(string), typeof(MyNestedElementItem), null, propertyChanged: OnTextPropertyChanged);
+        BindableProperty.Create(nameof(Text), typeof(string), typeof(MyNestedElementItem), string.Empty, propertyChanged: OnTextPropertyChanged);
 
     static void OnTextPropertyChanged(BindableObject bindable, object oldValue, object newValue) {
         var item = bindable as MyNestedElementItem;
         string? oldText = oldValue as string;
         string? newText = newValue as string;
-        item.OnTextChanged(item, oldText, newText);
+        if(item.OnTextChanged != null)
+            item.OnTextChanged(item, (string)oldText, (string)newText);
     }
 
     public delegate void TextChanged(object sender, string? oldText, string? newText);
@@ -44,16 +45,18 @@ public class MyElementParentControl : View
     }
 
     void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
-        foreach (MyNestedElementItem oldItem in e.OldItems)
-            oldItem.Parent = null;
+        if(e.OldItems != null)
+            foreach (MyNestedElementItem oldItem in e.OldItems)
+                oldItem.Parent = null;
 
-        foreach (MyNestedElementItem newItem in e.NewItems)
-            newItem.Parent = this;
+        if(e.NewItems != null)
+            foreach (MyNestedElementItem newItem in e.NewItems)
+                newItem.Parent = this;
     }
 }
 
 
-public class MyNestedVisualElementItem : VisualElement
+public class MyNestedVisualElementItem : VisualElement, IVisualTreeElement
 {
     public static readonly BindableProperty TextProperty =
         BindableProperty.Create(nameof(Text), typeof(string), typeof(MyNestedVisualElementItem), propertyChanged: OnTextPropertyChanged);
@@ -62,7 +65,8 @@ public class MyNestedVisualElementItem : VisualElement
         var item = bindable as MyNestedVisualElementItem;
         string? oldText = oldValue as string;
         string? newText = newValue as string;
-        item.OnTextChanged(item, oldText, newText);
+        if(item.OnTextChanged != null)
+            item.OnTextChanged(item, oldText, newText);
     }
 
     public delegate void TextChanged(object sender, string? oldText, string? newText);
@@ -73,10 +77,18 @@ public class MyNestedVisualElementItem : VisualElement
         get { return (string)GetValue(TextProperty); }
         set { SetValue(TextProperty, value); }
     }
+
+    //public IReadOnlyList<IVisualTreeElement> GetVisualChildren() {
+    //    return (this as VisualElement).GetVisualTreeDescendants();
+    //}
+
+	public IVisualTreeElement? GetVisualParent() {
+        return Parent;
+    }
 }
 
 [ContentProperty(nameof(Items))]
-public class MyVisualElementParentControl : View
+public class MyVisualElementParentControl : View, IVisualTreeElement
 {
     public ObservableCollection<MyNestedVisualElementItem> Items { get; set; } = new ObservableCollection<MyNestedVisualElementItem>();
 
@@ -84,11 +96,21 @@ public class MyVisualElementParentControl : View
         Items.CollectionChanged += Items_CollectionChanged;
     }
 
-    void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
-        foreach (MyNestedVisualElementItem oldItem in e.OldItems)
-            oldItem.Parent = null;
+    public IReadOnlyList<IVisualTreeElement> GetVisualChildren() {
+        return Items;
+    }
 
-        foreach (MyNestedVisualElementItem newItem in e.NewItems)
-            newItem.Parent = this;
+	public IVisualTreeElement? GetVisualParent() {
+        return Parent;
+    }
+
+    void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
+        if(e.OldItems != null)
+            foreach (MyNestedVisualElementItem oldItem in e.OldItems)
+                oldItem.Parent = null;
+
+        if(e.NewItems != null)
+            foreach (MyNestedVisualElementItem newItem in e.NewItems)
+                newItem.Parent = this;
     }
 }
