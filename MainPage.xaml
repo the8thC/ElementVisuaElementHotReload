@@ -13,10 +13,13 @@
         </local:MyElementParentControl>
 
         <Label Text="VisualElement parent control"/>
-        <local:MyVisualElementParentControl HeightRequest="50"
+        <local:MyVisualElementParentControl HeightRequest="100"
                                             WidthRequest="350">
-            <local:MyNestedVisualElementItem />
+            <local:MyNestedVisualElementItem Text="VisualElement Item 1"/>
             <local:MyNestedVisualElementItem Text="VisualElement Item 2"/>
+            <local:MyNestedVisualElementItem Text="VisualElement Item 3"/>
+
+
         </local:MyVisualElementParentControl>
 
     </StackLayout>

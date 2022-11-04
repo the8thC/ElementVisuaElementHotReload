@@ -63,6 +63,7 @@ namespace ElementVisuaElementHotReload.Platforms
         protected override void ConnectHandler(AView platformView) {
             base.ConnectHandler(platformView);
             UpdateItems(VirtualView.Items);
+            VirtualView.Items.CollectionChanged += (collection, args) => UpdateItems((IList<MyNestedVisualElementItem>)collection);
         }
 
         protected override void DisconnectHandler(AView platformView) {

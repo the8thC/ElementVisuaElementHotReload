@@ -77,14 +77,6 @@ public class MyNestedVisualElementItem : VisualElement, IVisualTreeElement
         get { return (string)GetValue(TextProperty); }
         set { SetValue(TextProperty, value); }
     }
-
-    //public IReadOnlyList<IVisualTreeElement> GetVisualChildren() {
-    //    return (this as VisualElement).GetVisualTreeDescendants();
-    //}
-
-	public IVisualTreeElement? GetVisualParent() {
-        return Parent;
-    }
 }
 
 [ContentProperty(nameof(Items))]
@@ -96,12 +88,8 @@ public class MyVisualElementParentControl : View, IVisualTreeElement
         Items.CollectionChanged += Items_CollectionChanged;
     }
 
-    public IReadOnlyList<IVisualTreeElement> GetVisualChildren() {
+    IReadOnlyList<IVisualTreeElement> IVisualTreeElement.GetVisualChildren() {
         return Items;
-    }
-
-	public IVisualTreeElement? GetVisualParent() {
-        return Parent;
     }
 
     void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
